@@ -20,8 +20,8 @@
       <nav class="nav" aria-label="Main navigation">
         <a href="#playground">Playground</a>
         <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#pilot">Paid Pilot</a>
+        <a href="#cli">CLI Setup</a>
+        <a href="https://github.com/daxx06/sql" target="_blank">GitHub</a>
       </nav>
     </header>
 
@@ -36,7 +36,7 @@
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#playground">Try Live Playground</a>
-            <a class="button secondary" href="#pilot">Book a Paid Pilot</a>
+            <a class="button secondary" href="https://github.com/daxx06/sql" target="_blank">View on GitHub</a>
           </div>
           <dl class="proof-grid" aria-label="Product proof points">
             <div>
@@ -160,16 +160,16 @@
         </div>
       </section>
 
-      <!-- ROI Calculator Section -->
+      <!-- Time Saved Calculator Section -->
       <section class="section calculator" id="calculator" aria-labelledby="roi-title">
         <div class="calc-description">
-          <p class="eyebrow">ROI Math</p>
-          <h2 id="roi-title">Calculate the ROI of automated seeding</h2>
+          <p class="eyebrow">Efficiency Metric</p>
+          <h2 id="roi-title">Calculate your development time saved</h2>
           <p>
-            By reducing manual mock database upkeep and accelerating dev cycles, SeedForge pays for itself in less than a day. Adjust the parameters to fit your team.
+            By automating mock database schema generation and eliminating manual data integrity fixes, you free up senior engineering hours for real feature work.
           </p>
         </div>
-        <form class="calc-panel" aria-label="ROI calculator" onsubmit="event.preventDefault();">
+        <form class="calc-panel" aria-label="Time Saved calculator" onsubmit="event.preventDefault();">
           <label>
             <div class="calc-label-header">
               <span>Developer Hourly Cost</span>
@@ -184,76 +184,56 @@
             </div>
             <input id="hoursSaved" type="range" min="2" max="60" step="1" value="8">
           </label>
-          <label>
-            <div class="calc-label-header">
-              <span>Monthly Subscription</span>
-              <span id="priceValue">$79</span>
-            </div>
-            <input id="monthlyPrice" type="range" min="19" max="499" step="10" value="79">
-          </label>
-          <output id="roiOutput">
-            $521 saved per month
-            <span>approx. 660% monthly ROI</span>
+          <output id="roiOutput" style="background: linear-gradient(135deg, var(--cyan), var(--emerald)); color: var(--text-inverse);">
+            $600 saved per month
+            <span>approx. 8 developer hours reclaimed</span>
           </output>
         </form>
       </section>
 
-      <!-- Pricing Section -->
-      <section class="section pricing" id="pricing">
+      <!-- CLI Setup Section -->
+      <section class="section pricing" id="cli">
         <div class="section-heading">
-          <p class="eyebrow">Flexible Plans</p>
-          <h2>Choose how you want to build test datasets</h2>
+          <p class="eyebrow">Open Source CLI</p>
+          <h2>Run SeedForge directly in your terminal</h2>
         </div>
-        <div class="pricing-grid">
-          <article>
-            <h3>Pilot Setup</h3>
-            <p class="price">$199<span>/one-time</span></p>
-            <p>A done-for-you package where we write custom rules and generate schema-safe seeds matching your live structure.</p>
-            <ul class="pricing-features">
-              <li>1 database schema upload</li>
-              <li>Custom rules config</li>
-              <li>Clean SQL and CSV script files</li>
-              <li>Email support for schema adjustments</li>
+        <div class="pricing-grid" style="grid-template-columns: 1fr; max-width: 800px; margin: 0 auto;">
+          <article style="background: var(--bg-surface-elevated); border-color: rgba(6, 182, 212, 0.25);">
+            <h3>Command Line Interface Setup</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">
+              SeedForge is published as a local NPM package. You can install it globally or run it on-demand using npx inside your project folder.
+            </p>
+            <div style="margin-bottom: 24px;">
+              <p style="font-size: 13px; font-weight: 700; color: var(--emerald); margin-bottom: 8px;">Run directly without installing:</p>
+              <pre style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; font-family: var(--font-code); font-size: 13px; color: #34d399; margin: 0; text-align: left;">npx sql-seed-mvp --schema ./schema.json --out ./out --format sql,csv</pre>
+            </div>
+            <div style="margin-bottom: 24px;">
+              <p style="font-size: 13px; font-weight: 700; color: var(--cyan); margin-bottom: 8px;">Install globally:</p>
+              <pre style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; font-family: var(--font-code); font-size: 13px; color: #38bdf8; margin: 0; text-align: left;">npm install -g sql-seed-mvp</pre>
+            </div>
+            <ul class="pricing-features" style="grid-template-columns: 1fr 1fr; display: grid; gap: 12px; margin-bottom: 24px;">
+              <li>100% Free & MIT Licensed</li>
+              <li>Runs entirely offline</li>
+              <li>Respects Foreign Keys</li>
+              <li>CLI Pipeline Ready</li>
+              <li>Generates SQL + CSVs</li>
+              <li>Deterministic seeds</li>
             </ul>
-            <a class="button secondary" href="mailto:pilot@seedforge.local?subject=SeedForge%20SQL%20Pilot%20Setup">Get Started</a>
-          </article>
-          <article class="featured">
-            <h3>Team Subscription</h3>
-            <p class="price">$79<span>/month</span></p>
-            <p>Perfect for engineering teams requiring updated seed profiles every sprint to cover changing table schemas.</p>
-            <ul class="pricing-features">
-              <li>Unlimited schema builds</li>
-              <li>Full access to playground editor</li>
-              <li>Up to 10 team seats</li>
-              <li>Priority support (24h SLAs)</li>
-            </ul>
-            <a class="button primary" href="#pilot">Subscribe Now</a>
-          </article>
-          <article>
-            <h3>Enterprise Edition</h3>
-            <p class="price">$299<span>/month</span></p>
-            <p>For organizations needing on-premises seed generation pipelines or specialized CLI orchestration rules.</p>
-            <ul class="pricing-features">
-              <li>Self-hosted CLI license</li>
-              <li>Strict offline data compilation</li>
-              <li>SAML SSO / IAM integration</li>
-              <li>Dedicated Slack help channel</li>
-            </ul>
-            <a class="button secondary" href="mailto:pilot@seedforge.local?subject=SeedForge%20SQL%20Enterprise">Contact Sales</a>
+            <a class="button primary" href="https://github.com/daxx06/sql" target="_blank" style="width: max-content; align-self: center;">Star on GitHub</a>
           </article>
         </div>
       </section>
 
-      <!-- CTA Paid Pilot Section -->
+      <!-- Open Source CTA Section -->
       <section class="cta" id="pilot">
         <div>
-          <p class="eyebrow">Paid Pilot Program</p>
-          <h2>Send us a schema. We'll send you safe data.</h2>
+          <p class="eyebrow">GitHub Community</p>
+          <h2>Help us improve SeedForge SQL</h2>
           <p>
-            Unsure about configuring custom rules for a complex legacy schema? We offer a paid pilot program: share a sanitized schema structure (no table rows), and we will deliver a custom setup with a tailored generation script.
+            SeedForge is open-source. Found a bug, have a feature request, or want to add support for PostgreSQL, MySQL, or Oracle? Open an issue or submit a pull request on our GitHub repository.
           </p>
         </div>
-        <a class="button primary" href="mailto:pilot@seedforge.local?subject=SeedForge%20SQL%20Pilot%20Inquiry">Request Paid Pilot</a>
+        <a class="button primary" href="https://github.com/daxx06/sql" target="_blank">Contribute on GitHub</a>
       </section>
     </main>
 

@@ -16,10 +16,8 @@ const playgroundTotalRows = document.querySelector("#playgroundTotalRows");
 // ROI Elements
 const hourlyRateInput = document.querySelector("#hourlyRate");
 const hoursSavedInput = document.querySelector("#hoursSaved");
-const monthlyPriceInput = document.querySelector("#monthlyPrice");
 const rateValue = document.querySelector("#rateValue");
 const hoursValue = document.querySelector("#hoursValue");
-const priceValue = document.querySelector("#priceValue");
 const roiOutput = document.querySelector("#roiOutput");
 
 // State
@@ -173,7 +171,7 @@ function init() {
   downloadBtn.addEventListener("click", handleDownload);
 
   // ROI Calculator Listeners
-  [hourlyRateInput, hoursSavedInput, monthlyPriceInput].forEach(input => {
+  [hourlyRateInput, hoursSavedInput].forEach(input => {
     input.addEventListener("input", updateRoi);
   });
 
@@ -479,34 +477,20 @@ function handleDownload() {
 function updateRoi() {
   const rate = parseInt(hourlyRateInput.value, 10) || 75;
   const hours = parseInt(hoursSavedInput.value, 10) || 8;
-  const price = parseInt(monthlyPriceInput.value, 10) || 79;
 
   // Update text label display
   rateValue.textContent = `$${rate}`;
   hoursValue.textContent = `${hours} hrs`;
-  priceValue.textContent = `$${price}`;
 
-  // ROI math
+  // Time-savings math
   const grossSavings = rate * hours;
-  const netSavings = grossSavings - price;
   
-  if (netSavings >= 0) {
-    const roiPercent = price > 0 ? Math.round((netSavings / price) * 100) : 0;
-    roiOutput.innerHTML = `
-      $${netSavings} saved per month
-      <span>approx. ${roiPercent}% monthly ROI</span>
-    `;
-    roiOutput.style.background = "linear-gradient(135deg, var(--cyan), var(--emerald))";
-    roiOutput.style.color = "var(--text-inverse)";
-  } else {
-    roiOutput.innerHTML = `
-      -$${Math.abs(netSavings)} net deficit
-      <span>Consider adjusting your hourly rates or hours saved.</span>
-    `;
-    roiOutput.style.background = "#3f1a1d";
-    roiOutput.style.color = "#fca5a5";
-    roiOutput.style.boxShadow = "none";
-  }
+  roiOutput.innerHTML = `
+    $${grossSavings} saved per month
+    <span>approx. ${hours} developer hours reclaimed</span>
+  `;
+  roiOutput.style.background = "linear-gradient(135deg, var(--cyan), var(--emerald))";
+  roiOutput.style.color = "var(--text-inverse)";
 }
 
 // Run app initializer
