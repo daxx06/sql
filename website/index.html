@@ -3,186 +3,328 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SeedForge SQL - Fake data for messy SQL Server databases</title>
+    <title>SeedForge SQL - Deterministic Test Data for SQL Server Databases</title>
     <meta
       name="description"
-      content="Generate safe, realistic SQL Server test data for legacy schemas without exposing customer records."
+      content="Generate safe, realistic, dependency-ordered SQL Server test data from your schema. Respects foreign keys and identity columns."
     >
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
+    <!-- Top Navigation Bar -->
     <header class="topbar">
       <a class="brand" href="#top" aria-label="SeedForge SQL home">
         <span class="brand-mark">SF</span>
         <span>SeedForge SQL</span>
       </a>
       <nav class="nav" aria-label="Main navigation">
+        <a href="#playground">Playground</a>
         <a href="#how">How it works</a>
         <a href="#pricing">Pricing</a>
-        <a href="#pilot">Pilot</a>
+        <a href="#pilot">Paid Pilot</a>
       </nav>
     </header>
 
     <main id="top">
+      <!-- Hero Section -->
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Synthetic test data for SQL Server teams</p>
-          <h1>Fill complex dev databases with safe fake data in minutes.</h1>
+          <p class="eyebrow">Developer & DBA Tooling</p>
+          <h1>Fill complex SQL Server databases in seconds.</h1>
           <p class="lede">
-            SeedForge reads an exported schema, respects table relationships, and produces SQL or CSV seed files your team can review before touching a database.
+            Export your database schema, apply simple rules, and generate thousands of rows of realistic, dependency-safe seed data. Completely deterministic.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#pilot">Start a paid pilot</a>
-            <a class="button secondary" href="#demo">See sample output</a>
+            <a class="button primary" href="#playground">Try Live Playground</a>
+            <a class="button secondary" href="#pilot">Book a Paid Pilot</a>
           </div>
           <dl class="proof-grid" aria-label="Product proof points">
             <div>
-              <dt>300+</dt>
-              <dd>table schemas tested</dd>
+              <dt>Deterministic</dt>
+              <dd>Repeatable seed generation</dd>
             </div>
             <div>
-              <dt>0</dt>
-              <dd>production writes by default</dd>
+              <dt>FK-Aware</dt>
+              <dd>Respects table hierarchies</dd>
             </div>
             <div>
-              <dt>SQL + CSV</dt>
-              <dd>reviewable exports</dd>
+              <dt>Local-First</dt>
+              <dd>Zero database writes by default</dd>
             </div>
           </dl>
         </div>
 
-        <div class="product-shell" id="demo" aria-label="SeedForge sample output preview">
+        <!-- Interactive Playground UI (Replaces the old static shell) -->
+        <div class="product-shell" id="playground" aria-label="Interactive SQL generator playground">
           <div class="window-bar">
-            <span></span><span></span><span></span>
-            <strong>seed.sql preview</strong>
-          </div>
-          <div class="schema-flow">
-            <div class="table-card active">
-              <span>dbo.users</span>
-              <b>4 rows</b>
+            <div class="window-dots">
+              <span></span><span></span><span></span>
             </div>
-            <div class="flow-line"></div>
-            <div class="table-card">
-              <span>dbo.orders</span>
-              <b>6 rows</b>
-            </div>
-            <div class="flow-line"></div>
-            <div class="table-card">
-              <span>dbo.invoices</span>
-              <b>4 rows</b>
+            <div class="window-title">
+              Preset Schema:
+              <select id="presetSelect" class="playground-preset-select">
+                <option value="ecommerce">E-Commerce & Invoicing</option>
+                <option value="saas">SaaS App & Activity</option>
+                <option value="pm">Project Management</option>
+                <option value="custom">+ Import Custom Schema...</option>
+              </select>
             </div>
           </div>
-          <pre><code>INSERT INTO [dbo].[users]
-([id], [email], [full_name])
-VALUES
-(1, N'user0001@example.test', N'Avery Patel');
+          <div class="playground-body">
+            <!-- Sidebar with tables and inputs -->
+            <aside class="playground-sidebar">
+              <div class="sidebar-section-title">Global Seed</div>
+              <div class="sidebar-seed-input-container">
+                <label for="playgroundSeed">Deterministic seed value</label>
+                <input id="playgroundSeed" type="text" value="demo" placeholder="e.g. pilot">
+              </div>
+              <div class="sidebar-section-title">Table Row Counts</div>
+              <div id="tableList" class="table-list">
+                <!-- Populated dynamically via JS -->
+              </div>
+            </aside>
 
-INSERT INTO [dbo].[orders]
-([id], [user_id], [status])
-VALUES
-(1, 4, N'draft');</code></pre>
+            <!-- Output panel -->
+            <div class="playground-content">
+              <div class="content-tabs">
+                <div id="tabsGroup" class="tabs-group">
+                  <button class="tab-btn active" data-tab="sql">seed.sql</button>
+                  <button class="tab-btn" data-tab="csv">CSV Exports</button>
+                  <button class="tab-btn" data-tab="rules">rules.json</button>
+                  <button class="tab-btn" data-tab="schema">schema.json</button>
+                </div>
+                <div class="tab-actions">
+                  <button id="copyBtn" class="tab-action-btn" aria-label="Copy to clipboard">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy
+                  </button>
+                  <button id="downloadBtn" class="tab-action-btn" aria-label="Download files">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download
+                  </button>
+                </div>
+              </div>
+              <!-- Code view viewport -->
+              <div class="viewer-workspace">
+                <!-- SQL output is standard, others can be raw text -->
+                <pre><code id="outputCode">Loading...</code></pre>
+              </div>
+              <!-- Stats bar -->
+              <div class="playground-stats-bar">
+                <span id="playgroundSpeedText">Generated in 0ms</span>
+                <span>Dataset Size: <span id="playgroundTotalRows" class="stats-green">0 rows</span></span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
+      <!-- Pain Points Section -->
       <section class="band problem">
         <div>
-          <h2>Why teams pay for this</h2>
+          <p class="eyebrow">Database Seed Problems</p>
+          <h2>Why database seeding is usually broken</h2>
           <p>
-            Developers need realistic dev data, but real customer data is risky and generic fake-data tools break when databases have hundreds of connected tables.
+            Developers need rich, relational test data, but syncing real customer data is a compliance hazard, and generic faker scripts crash when they break database foreign keys.
           </p>
         </div>
         <ul class="pain-list">
-          <li>Legacy SQL Server schemas are hard to seed manually.</li>
-          <li>Privacy rules make production data unsafe for testing.</li>
-          <li>Broken foreign keys waste developer and DBA time.</li>
+          <li>Manual scripting is tedious and prone to syntax bugs.</li>
+          <li>Compliance policies make production snapshots illegal.</li>
+          <li>Orphaned relationships cause index and join failures.</li>
         </ul>
       </section>
 
+      <!-- How it Works Section -->
       <section class="section" id="how">
         <div class="section-heading">
-          <p class="eyebrow">Simple workflow</p>
-          <h2>Export schema, generate data, review before running.</h2>
+          <p class="eyebrow">How It Works</p>
+          <h2>Three simple steps to safe, realistic mock data</h2>
         </div>
         <div class="steps">
           <article>
             <span>1</span>
-            <h3>Inspect structure</h3>
-            <p>Use a JSON schema export from SQL Server tables, columns, keys, nullable fields, and relationships.</p>
+            <h3>Inspect Structure</h3>
+            <p>Upload a JSON export of your SQL Server database structure (tables, types, primary keys, identity columns, and references).</p>
           </article>
           <article>
             <span>2</span>
-            <h3>Apply rules</h3>
-            <p>Choose row counts, include or exclude tables, and override fields like status, email domains, dates, or prices.</p>
+            <h3>Define Rules</h3>
+            <p>Apply deterministic rules to columns (e.g. status lists, number bounds, emails, phone formulas) using our rules structure.</p>
           </article>
           <article>
             <span>3</span>
-            <h3>Ship safe files</h3>
-            <p>Generate SQL inserts and CSV files that can be reviewed before developers load them into a dev database.</p>
+            <h3>Export Output</h3>
+            <p>Download a single, transaction-safe SQL script file or a folder of clean CSV files. Your database never receives direct writes.</p>
           </article>
         </div>
       </section>
 
-      <section class="section calculator" aria-labelledby="roi-title">
-        <div>
-          <p class="eyebrow">Revenue logic</p>
-          <h2 id="roi-title">The sale is time saved and risk avoided.</h2>
+      <!-- ROI Calculator Section -->
+      <section class="section calculator" id="calculator" aria-labelledby="roi-title">
+        <div class="calc-description">
+          <p class="eyebrow">ROI Math</p>
+          <h2 id="roi-title">Calculate the ROI of automated seeding</h2>
           <p>
-            A team paying developers or database consultants can justify a small monthly fee if this saves even a few hours per month.
+            By reducing manual mock database upkeep and accelerating dev cycles, SeedForge pays for itself in less than a day. Adjust the parameters to fit your team.
           </p>
         </div>
-        <form class="calc-panel" aria-label="ROI calculator">
+        <form class="calc-panel" aria-label="ROI calculator" onsubmit="event.preventDefault();">
           <label>
-            Developer hourly cost
-            <input id="hourlyRate" type="number" min="10" max="300" value="75">
+            <div class="calc-label-header">
+              <span>Developer Hourly Cost</span>
+              <span id="rateValue">$75</span>
+            </div>
+            <input id="hourlyRate" type="range" min="30" max="250" step="5" value="75">
           </label>
           <label>
-            Hours saved per month
-            <input id="hoursSaved" type="number" min="1" max="80" value="8">
+            <div class="calc-label-header">
+              <span>Hours Saved per Month</span>
+              <span id="hoursValue">8 hrs</span>
+            </div>
+            <input id="hoursSaved" type="range" min="2" max="60" step="1" value="8">
           </label>
           <label>
-            Monthly subscription
-            <input id="monthlyPrice" type="number" min="19" max="999" value="79">
+            <div class="calc-label-header">
+              <span>Monthly Subscription</span>
+              <span id="priceValue">$79</span>
+            </div>
+            <input id="monthlyPrice" type="range" min="19" max="499" step="10" value="79">
           </label>
-          <output id="roiOutput">$521 saved per month after subscription</output>
+          <output id="roiOutput">
+            $521 saved per month
+            <span>approx. 660% monthly ROI</span>
+          </output>
         </form>
       </section>
 
+      <!-- Pricing Section -->
       <section class="section pricing" id="pricing">
         <div class="section-heading">
-          <p class="eyebrow">How it earns</p>
-          <h2>Start service-first, then turn repeated work into SaaS.</h2>
+          <p class="eyebrow">Flexible Plans</p>
+          <h2>Choose how you want to build test datasets</h2>
         </div>
         <div class="pricing-grid">
           <article>
             <h3>Pilot Setup</h3>
-            <p class="price">$199</p>
-            <p>One-time schema review, custom rules, and generated seed files for a real team.</p>
+            <p class="price">$199<span>/one-time</span></p>
+            <p>A done-for-you package where we write custom rules and generate schema-safe seeds matching your live structure.</p>
+            <ul class="pricing-features">
+              <li>1 database schema upload</li>
+              <li>Custom rules config</li>
+              <li>Clean SQL and CSV script files</li>
+              <li>Email support for schema adjustments</li>
+            </ul>
+            <a class="button secondary" href="mailto:pilot@seedforge.local?subject=SeedForge%20SQL%20Pilot%20Setup">Get Started</a>
           </article>
           <article class="featured">
             <h3>Team Subscription</h3>
-            <p class="price">$79/mo</p>
-            <p>Repeat generation for dev teams that need fresh test data every sprint.</p>
+            <p class="price">$79<span>/month</span></p>
+            <p>Perfect for engineering teams requiring updated seed profiles every sprint to cover changing table schemas.</p>
+            <ul class="pricing-features">
+              <li>Unlimited schema builds</li>
+              <li>Full access to playground editor</li>
+              <li>Up to 10 team seats</li>
+              <li>Priority support (24h SLAs)</li>
+            </ul>
+            <a class="button primary" href="#pilot">Subscribe Now</a>
           </article>
           <article>
-            <h3>Consultant Pack</h3>
-            <p class="price">$299+</p>
-            <p>Done-for-you onboarding for agencies and database consultants with messy client schemas.</p>
+            <h3>Enterprise Edition</h3>
+            <p class="price">$299<span>/month</span></p>
+            <p>For organizations needing on-premises seed generation pipelines or specialized CLI orchestration rules.</p>
+            <ul class="pricing-features">
+              <li>Self-hosted CLI license</li>
+              <li>Strict offline data compilation</li>
+              <li>SAML SSO / IAM integration</li>
+              <li>Dedicated Slack help channel</li>
+            </ul>
+            <a class="button secondary" href="mailto:pilot@seedforge.local?subject=SeedForge%20SQL%20Enterprise">Contact Sales</a>
           </article>
         </div>
       </section>
 
+      <!-- CTA Paid Pilot Section -->
       <section class="cta" id="pilot">
         <div>
-          <p class="eyebrow">First customer motion</p>
-          <h2>Offer a paid pilot before building more features.</h2>
+          <p class="eyebrow">Paid Pilot Program</p>
+          <h2>Send us a schema. We'll send you safe data.</h2>
           <p>
-            Message SQL Server developers, DBAs, and agencies: “Send a schema export, I’ll generate safe test data and a repeatable rule file.”
+            Unsure about configuring custom rules for a complex legacy schema? We offer a paid pilot program: share a sanitized schema structure (no table rows), and we will deliver a custom setup with a tailored generation script.
           </p>
         </div>
-        <a class="button primary" href="mailto:pilot@seedforge.local?subject=SeedForge%20SQL%20Pilot">Draft pilot email</a>
+        <a class="button primary" href="mailto:pilot@seedforge.local?subject=SeedForge%20SQL%20Pilot%20Inquiry">Request Paid Pilot</a>
       </section>
     </main>
 
-    <script src="./app.js"></script>
+    <!-- Footer -->
+    <footer class="footer-note">
+      <p>&copy; 2026 SeedForge SQL. Locally executed, privacy-focused data mock systems.</p>
+    </footer>
+
+    <!-- Schema Import Modal -->
+    <div id="importModal" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Import SQL Server Schema</h3>
+          <button id="closeModalBtn" class="modal-close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+            1. Copy and run this T-SQL script in SSMS against your SQL Server database to generate the JSON model:
+          </p>
+          <div style="position: relative; margin-bottom: 18px;">
+            <pre style="max-height: 180px; font-size: 11px; padding: 12px; border-radius: 6px; background: var(--bg-main); border: 1px solid var(--border-color); overflow: auto; margin: 0;"><code id="sqlExporterScript">SELECT 
+    s.name AS [schema],
+    t.name AS [name],
+    (
+        SELECT 
+            c.name AS [name],
+            tp.name AS [type],
+            CAST(c.is_nullable AS bit) AS [nullable],
+            CAST(c.is_identity AS bit) AS [identity],
+            CAST(CASE WHEN pk.column_id IS NOT NULL THEN 1 ELSE 0 END AS bit) AS [primaryKey],
+            (
+                SELECT TOP 1
+                    rt.name AS [table],
+                    rc.name AS [column]
+                FROM sys.foreign_key_columns fkc
+                INNER JOIN sys.tables rt ON fkc.referenced_object_id = rt.object_id
+                INNER JOIN sys.columns rc ON fkc.referenced_object_id = rc.object_id AND fkc.referenced_column_id = rc.column_id
+                WHERE fkc.parent_object_id = t.object_id AND fkc.parent_column_id = c.column_id
+                FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+            ) AS [references]
+        FROM sys.columns c
+        INNER JOIN sys.types tp ON c.user_type_id = tp.user_type_id
+        LEFT JOIN (
+            SELECT ic.column_id, ic.object_id
+            FROM sys.index_columns ic
+            INNER JOIN sys.indexes i ON ic.object_id = i.object_id AND ic.index_id = i.index_id
+            WHERE i.is_primary_key = 1
+        ) pk ON t.object_id = pk.object_id AND c.column_id = pk.column_id
+        WHERE c.object_id = t.object_id
+        FOR JSON PATH
+    ) AS [columns]
+FROM sys.tables t
+INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
+WHERE t.is_ms_shipped = 0
+FOR JSON PATH, ROOT('tables')</code></pre>
+            <button id="copyExporterBtn" class="tab-action-btn" style="position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 4px 8px; background: rgba(0, 0, 0, 0.7);">Copy Script</button>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
+            2. Paste the JSON output generated by the script below:
+          </p>
+          <textarea id="customSchemaInput" class="editor-textarea" style="height: 120px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-main); padding: 10px; margin-bottom: 16px; font-size: 12px; width: 100%; box-sizing: border-box;" placeholder='{"tables": [...]}'></textarea>
+          <div id="importError" style="color: #ef4444; font-size: 12px; margin-bottom: 12px; display: none; font-weight: 600;"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="cancelModalBtn" class="button secondary" style="min-height: 38px; font-size: 13px; padding: 0 16px;">Cancel</button>
+          <button id="applySchemaBtn" class="button primary" style="min-height: 38px; font-size: 13px; padding: 0 16px;">Load Schema</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module Loading for Modern JS Structure -->
+    <script type="module" src="./app.js"></script>
   </body>
 </html>

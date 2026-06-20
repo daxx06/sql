@@ -1,0 +1,69 @@
+# =====================================================================
+# SeedForge SQL - CI/CD Integration Template
+# Save this file to .github/workflows/seedforge.yml in your repository.
+# This workflow automatically validates that seed scripts match schema changes on every Pull Request.
+# =====================================================================
+
+name: Database Seeding & Schema Drift Validation
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'schema/**'
+      - 'migrations/**'
+      - 'database/**'
+
+jobs:
+  validate-db-seeding:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      # Step 1: Ingest/Extract Schema changes from the PR
+      - name: Extract Fresh Schema Schema Model
+        run: |
+          # Run schema exporter or map T-SQL DDL schema files to JSON
+          node ./scripts/extract-schema.js --out ./schema/schema.json
+
+      # Step 2: Generate Deterministic, FK-Safe Seed Files on the Fly
+      # Uses the pull request number as a seed to ensure deterministic but unique PR test data.
+      - name: Generate Seed Data
+        run: |
+          npx sql-seed --schema ./schema/schema.json --rules ./database/rules.json --out ./dist/seeds --format sql,csv --rows default=50 --seed pr_number_${{ github.event.pull_request.number }}
+
+      # Step 3: Spin up a temporary local SQL Server instance to verify constraints
+      - name: Spin up Test MS SQL Server Container
+        run: |
+          docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=SecurePassword2026!" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest
+          # Wait for SQL Server to boot
+          sleep 15
+
+      # Step 4: Run migration scripts and execute generated seed.sql
+      - name: Run Migrations and Execute Seed Script
+        run: |
+          # Apply database schema
+          npm run db:migrate -- --env test
+          
+          # Execute generated seed statements using sqlcmd client
+          docker exec -i $(docker ps -q -f ancestor=mcr.microsoft.com/mssql/server:2022-latest) \
+            /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "SecurePassword2026!" -C -i /dist/seeds/seed.sql
+
+      - name: Tear Down Test Container
+        if: always()
+        run: |
+          docker stop $(docker ps -q -f ancestor=mcr.microsoft.com/mssql/server:2022-latest)
+
+      - name: Seeding Validation Success Report
+        run: echo "SeedForge: Verification successful. Generated seeds loaded into SQL Server container without referential integrity constraint failures."

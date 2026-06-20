@@ -7,7 +7,7 @@
     "dbo.order_items",
     "dbo.invoices"
   ],
-  "totalRows": 28,
-  "generatedAt": "2026-06-20T05:01:56.151Z",
+  "totalRows": 50,
+  "generatedAt": "2026-06-20T05:14:21.180Z",
   "skippedTables": []
 }

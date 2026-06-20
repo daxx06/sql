@@ -9,46 +9,68 @@ INSERT INTO [dbo].[users] ([id], [email], [full_name], [created_at]) VALUES (1, 
 INSERT INTO [dbo].[users] ([id], [email], [full_name], [created_at]) VALUES (2, N'user0002@example.test', N'Jordan Patel', N'2025-01-02T09:00:00.000Z');
 INSERT INTO [dbo].[users] ([id], [email], [full_name], [created_at]) VALUES (3, N'user0003@example.test', N'Riley Patel', N'2025-01-03T09:00:00.000Z');
 INSERT INTO [dbo].[users] ([id], [email], [full_name], [created_at]) VALUES (4, N'user0004@example.test', N'Morgan Patel', N'2025-01-04T09:00:00.000Z');
+INSERT INTO [dbo].[users] ([id], [email], [full_name], [created_at]) VALUES (5, N'user0005@example.test', N'Casey Patel', N'2025-01-05T09:00:00.000Z');
+INSERT INTO [dbo].[users] ([id], [email], [full_name], [created_at]) VALUES (6, N'user0006@example.test', N'Taylor Patel', N'2025-01-06T09:00:00.000Z');
+INSERT INTO [dbo].[users] ([id], [email], [full_name], [created_at]) VALUES (7, N'user0007@example.test', N'Quinn Patel', N'2025-01-07T09:00:00.000Z');
+INSERT INTO [dbo].[users] ([id], [email], [full_name], [created_at]) VALUES (8, N'user0008@example.test', N'Jamie Patel', N'2025-01-08T09:00:00.000Z');
 SET IDENTITY_INSERT [dbo].[users] OFF;
 
 -- [dbo].[products]
 SET IDENTITY_INSERT [dbo].[products] ON;
-INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (1, N'Avery Patel', N'SKU-000001', 22918);
-INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (2, N'Jordan Patel', N'SKU-000002', 4489);
-INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (3, N'Riley Patel', N'SKU-000003', 16236);
-INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (4, N'Morgan Patel', N'SKU-000004', 7156);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (1, N'Avery Patel', N'SKU-000001', 9150);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (2, N'Jordan Patel', N'SKU-000002', 1629);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (3, N'Riley Patel', N'SKU-000003', 6423);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (4, N'Morgan Patel', N'SKU-000004', 2717);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (5, N'Casey Patel', N'SKU-000005', 9258);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (6, N'Taylor Patel', N'SKU-000006', 1905);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (7, N'Quinn Patel', N'SKU-000007', 8092);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (8, N'Jamie Patel', N'SKU-000008', 6027);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (9, N'Avery Smith', N'SKU-000009', 8821);
+INSERT INTO [dbo].[products] ([id], [name], [sku], [price_cents]) VALUES (10, N'Jordan Smith', N'SKU-000010', 5158);
 SET IDENTITY_INSERT [dbo].[products] OFF;
 
 -- [dbo].[orders]
 SET IDENTITY_INSERT [dbo].[orders] ON;
-INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (1, 4, N'draft', N'2025-01-01T09:00:00.000Z');
-INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (2, 4, N'fulfilled', N'2025-01-02T09:00:00.000Z');
-INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (3, 4, N'fulfilled', N'2025-01-03T09:00:00.000Z');
-INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (4, 3, N'paid', N'2025-01-04T09:00:00.000Z');
-INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (5, 4, N'paid', N'2025-01-05T09:00:00.000Z');
-INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (6, 3, N'fulfilled', N'2025-01-06T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (1, 5, N'active', N'2025-01-01T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (2, 7, N'active', N'2025-01-02T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (3, 5, N'paused', N'2025-01-03T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (4, 8, N'paused', N'2025-01-04T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (5, 6, N'active', N'2025-01-05T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (6, 5, N'active', N'2025-01-06T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (7, 1, N'active', N'2025-01-07T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (8, 5, N'new', N'2025-01-08T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (9, 7, N'new', N'2025-01-09T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (10, 1, N'new', N'2025-01-10T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (11, 8, N'paused', N'2025-01-11T09:00:00.000Z');
+INSERT INTO [dbo].[orders] ([id], [user_id], [status], [created_at]) VALUES (12, 8, N'new', N'2025-01-12T09:00:00.000Z');
 SET IDENTITY_INSERT [dbo].[orders] OFF;
 
 -- [dbo].[order_items]
 SET IDENTITY_INSERT [dbo].[order_items] ON;
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (1, 6, 3, 4);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (2, 3, 3, 2);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (3, 1, 2, 3);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (4, 2, 4, 1);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (5, 1, 1, 5);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (6, 4, 4, 1);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (7, 2, 4, 2);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (8, 4, 1, 4);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (9, 4, 1, 4);
-INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (10, 5, 2, 3);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (1, 3, 10, 3187);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (2, 7, 3, 7902);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (3, 8, 3, 6388);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (4, 9, 5, 4225);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (5, 9, 4, 1364);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (6, 11, 5, 5056);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (7, 11, 6, 5522);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (8, 12, 9, 3073);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (9, 5, 10, 9429);
+INSERT INTO [dbo].[order_items] ([id], [order_id], [product_id], [quantity]) VALUES (10, 3, 5, 5924);
 SET IDENTITY_INSERT [dbo].[order_items] OFF;
 
 -- [dbo].[invoices]
 SET IDENTITY_INSERT [dbo].[invoices] ON;
-INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (1, 1, N'INV-0001', N'2025-01-01T09:00:00.000Z');
-INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (2, 2, N'INV-0002', N'2025-01-02T09:00:00.000Z');
-INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (3, 3, N'INV-0003', N'2025-01-03T09:00:00.000Z');
-INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (4, 4, N'INV-0004', N'2025-01-04T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (1, 1, N'value-1', N'2025-01-01T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (2, 2, N'value-2', N'2025-01-02T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (3, 3, N'value-3', N'2025-01-03T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (4, 4, N'value-4', N'2025-01-04T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (5, 5, N'value-5', N'2025-01-05T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (6, 6, N'value-6', N'2025-01-06T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (7, 7, N'value-7', N'2025-01-07T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (8, 8, N'value-8', N'2025-01-08T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (9, 9, N'value-9', N'2025-01-09T09:00:00.000Z');
+INSERT INTO [dbo].[invoices] ([id], [order_id], [invoice_number], [issued_at]) VALUES (10, 10, N'value-10', N'2025-01-10T09:00:00.000Z');
 SET IDENTITY_INSERT [dbo].[invoices] OFF;
 
 COMMIT TRANSACTION;

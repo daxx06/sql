@@ -114,3 +114,43 @@ test("handles a simulated 300 table dependency chain", () => {
   assert.equal(dataset.summary.tableOrder.at(0), "dbo.table_1");
   assert.equal(dataset.summary.tableOrder.at(-1), "dbo.table_300");
 });
+
+test("handles circular/cyclic table dependencies gracefully", () => {
+  const circularSchema = {
+    tables: [
+      {
+        name: "employees",
+        columns: [
+          { name: "id", type: "int", identity: true, primaryKey: true, nullable: false },
+          { name: "name", type: "nvarchar", nullable: false },
+          { name: "manager_id", type: "int", nullable: true, references: { table: "employees", column: "id" } },
+          { name: "department_id", type: "int", nullable: false, references: { table: "departments", column: "id" } }
+        ]
+      },
+      {
+        name: "departments",
+        columns: [
+          { name: "id", type: "int", identity: true, primaryKey: true, nullable: false },
+          { name: "name", type: "nvarchar", nullable: false },
+          { name: "head_id", type: "int", nullable: false, references: { table: "employees", column: "id" } }
+        ]
+      }
+    ]
+  };
+
+  // This should not throw a "Circular table dependency" error
+  const dataset = generateDataset(circularSchema, {
+    seed: "circular",
+    rows: parseRowsSpec("default=2")
+  });
+
+  assert.equal(dataset.tables.length, 2);
+  assert.equal(dataset.summary.totalRows, 4); // 2 tables * 2 rows = 4
+
+  const sql = renderSqlServerInsertScript(dataset);
+  // Verify that it disables constraints temporarily
+  assert.match(sql, /ALTER TABLE \[dbo\]\.\[employees\] NOCHECK CONSTRAINT ALL;/);
+  assert.match(sql, /ALTER TABLE \[dbo\]\.\[departments\] NOCHECK CONSTRAINT ALL;/);
+  assert.match(sql, /ALTER TABLE \[dbo\]\.\[employees\] WITH CHECK CHECK CONSTRAINT ALL;/);
+  assert.match(sql, /ALTER TABLE \[dbo\]\.\[departments\] WITH CHECK CHECK CONSTRAINT ALL;/);
+});
