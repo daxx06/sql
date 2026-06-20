@@ -1,0 +1,7 @@
+{
+  "users.email": { "kind": "email", "domain": "example.test" },
+  "orders.status": { "kind": "pick", "values": ["draft", "paid", "fulfilled", "cancelled"] },
+  "products.price_cents": { "kind": "number", "min": 500, "max": 25000 },
+  "order_items.quantity": { "kind": "number", "min": 1, "max": 5 },
+  "invoice_number": { "kind": "text", "prefix": "INV-" }
+}

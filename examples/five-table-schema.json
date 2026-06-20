@@ -1,0 +1,54 @@
+{
+  "tables": [
+    {
+      "schema": "dbo",
+      "name": "users",
+      "columns": [
+        { "name": "id", "type": "int", "nullable": false, "identity": true, "primaryKey": true },
+        { "name": "email", "type": "nvarchar", "nullable": false, "unique": true },
+        { "name": "full_name", "type": "nvarchar", "nullable": false },
+        { "name": "created_at", "type": "datetime2", "nullable": false }
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "products",
+      "columns": [
+        { "name": "id", "type": "int", "nullable": false, "identity": true, "primaryKey": true },
+        { "name": "name", "type": "nvarchar", "nullable": false },
+        { "name": "sku", "type": "nvarchar", "nullable": false, "unique": true },
+        { "name": "price_cents", "type": "int", "nullable": false }
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "orders",
+      "columns": [
+        { "name": "id", "type": "int", "nullable": false, "identity": true, "primaryKey": true },
+        { "name": "user_id", "type": "int", "nullable": false, "references": { "table": "users", "column": "id" } },
+        { "name": "status", "type": "nvarchar", "nullable": false },
+        { "name": "created_at", "type": "datetime2", "nullable": false }
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "order_items",
+      "columns": [
+        { "name": "id", "type": "int", "nullable": false, "identity": true, "primaryKey": true },
+        { "name": "order_id", "type": "int", "nullable": false, "references": { "table": "orders", "column": "id" } },
+        { "name": "product_id", "type": "int", "nullable": false, "references": { "table": "products", "column": "id" } },
+        { "name": "quantity", "type": "int", "nullable": false }
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "invoices",
+      "columns": [
+        { "name": "id", "type": "int", "nullable": false, "identity": true, "primaryKey": true },
+        { "name": "order_id", "type": "int", "nullable": false, "unique": true, "references": { "table": "orders", "column": "id" } },
+        { "name": "invoice_number", "type": "nvarchar", "nullable": false, "unique": true },
+        { "name": "issued_at", "type": "datetime2", "nullable": false }
+      ]
+    }
+  ]
+}

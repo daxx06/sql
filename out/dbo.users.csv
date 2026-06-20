@@ -1,0 +1,5 @@
+id,email,full_name,created_at
+1,user0001@example.test,Avery Patel,2025-01-01T09:00:00.000Z
+2,user0002@example.test,Jordan Patel,2025-01-02T09:00:00.000Z
+3,user0003@example.test,Riley Patel,2025-01-03T09:00:00.000Z
+4,user0004@example.test,Morgan Patel,2025-01-04T09:00:00.000Z

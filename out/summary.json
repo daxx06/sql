@@ -1,0 +1,13 @@
+{
+  "seed": "demo",
+  "tableOrder": [
+    "dbo.users",
+    "dbo.products",
+    "dbo.orders",
+    "dbo.order_items",
+    "dbo.invoices"
+  ],
+  "totalRows": 28,
+  "generatedAt": "2026-06-20T05:01:56.151Z",
+  "skippedTables": []
+}

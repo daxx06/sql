@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SeedForge SQL - Fake data for messy SQL Server databases</title>
+    <meta
+      name="description"
+      content="Generate safe, realistic SQL Server test data for legacy schemas without exposing customer records."
+    >
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="SeedForge SQL home">
+        <span class="brand-mark">SF</span>
+        <span>SeedForge SQL</span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#pilot">Pilot</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Synthetic test data for SQL Server teams</p>
+          <h1>Fill complex dev databases with safe fake data in minutes.</h1>
+          <p class="lede">
+            SeedForge reads an exported schema, respects table relationships, and produces SQL or CSV seed files your team can review before touching a database.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#pilot">Start a paid pilot</a>
+            <a class="button secondary" href="#demo">See sample output</a>
+          </div>
+          <dl class="proof-grid" aria-label="Product proof points">
+            <div>
+              <dt>300+</dt>
+              <dd>table schemas tested</dd>
+            </div>
+            <div>
+              <dt>0</dt>
+              <dd>production writes by default</dd>
+            </div>
+            <div>
+              <dt>SQL + CSV</dt>
+              <dd>reviewable exports</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="product-shell" id="demo" aria-label="SeedForge sample output preview">
+          <div class="window-bar">
+            <span></span><span></span><span></span>
+            <strong>seed.sql preview</strong>
+          </div>
+          <div class="schema-flow">
+            <div class="table-card active">
+              <span>dbo.users</span>
+              <b>4 rows</b>
+            </div>
+            <div class="flow-line"></div>
+            <div class="table-card">
+              <span>dbo.orders</span>
+              <b>6 rows</b>
+            </div>
+            <div class="flow-line"></div>
+            <div class="table-card">
+              <span>dbo.invoices</span>
+              <b>4 rows</b>
+            </div>
+          </div>
+          <pre><code>INSERT INTO [dbo].[users]
+([id], [email], [full_name])
+VALUES
+(1, N'user0001@example.test', N'Avery Patel');
+
+INSERT INTO [dbo].[orders]
+([id], [user_id], [status])
+VALUES
+(1, 4, N'draft');</code></pre>
+        </div>
+      </section>
+
+      <section class="band problem">
+        <div>
+          <h2>Why teams pay for this</h2>
+          <p>
+            Developers need realistic dev data, but real customer data is risky and generic fake-data tools break when databases have hundreds of connected tables.
+          </p>
+        </div>
+        <ul class="pain-list">
+          <li>Legacy SQL Server schemas are hard to seed manually.</li>
+          <li>Privacy rules make production data unsafe for testing.</li>
+          <li>Broken foreign keys waste developer and DBA time.</li>
+        </ul>
+      </section>
+
+      <section class="section" id="how">
+        <div class="section-heading">
+          <p class="eyebrow">Simple workflow</p>
+          <h2>Export schema, generate data, review before running.</h2>
+        </div>
+        <div class="steps">
+          <article>
+            <span>1</span>
+            <h3>Inspect structure</h3>
+            <p>Use a JSON schema export from SQL Server tables, columns, keys, nullable fields, and relationships.</p>
+          </article>
+          <article>
+            <span>2</span>
+            <h3>Apply rules</h3>
+            <p>Choose row counts, include or exclude tables, and override fields like status, email domains, dates, or prices.</p>
+          </article>
+          <article>
+            <span>3</span>
+            <h3>Ship safe files</h3>
+            <p>Generate SQL inserts and CSV files that can be reviewed before developers load them into a dev database.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section calculator" aria-labelledby="roi-title">
+        <div>
+          <p class="eyebrow">Revenue logic</p>
+          <h2 id="roi-title">The sale is time saved and risk avoided.</h2>
+          <p>
+            A team paying developers or database consultants can justify a small monthly fee if this saves even a few hours per month.
+          </p>
+        </div>
+        <form class="calc-panel" aria-label="ROI calculator">
+          <label>
+            Developer hourly cost
+            <input id="hourlyRate" type="number" min="10" max="300" value="75">
+          </label>
+          <label>
+            Hours saved per month
+            <input id="hoursSaved" type="number" min="1" max="80" value="8">
+          </label>
+          <label>
+            Monthly subscription
+            <input id="monthlyPrice" type="number" min="19" max="999" value="79">
+          </label>
+          <output id="roiOutput">$521 saved per month after subscription</output>
+        </form>
+      </section>
+
+      <section class="section pricing" id="pricing">
+        <div class="section-heading">
+          <p class="eyebrow">How it earns</p>
+          <h2>Start service-first, then turn repeated work into SaaS.</h2>
+        </div>
+        <div class="pricing-grid">
+          <article>
+            <h3>Pilot Setup</h3>
+            <p class="price">$199</p>
+            <p>One-time schema review, custom rules, and generated seed files for a real team.</p>
+          </article>
+          <article class="featured">
+            <h3>Team Subscription</h3>
+            <p class="price">$79/mo</p>
+            <p>Repeat generation for dev teams that need fresh test data every sprint.</p>
+          </article>
+          <article>
+            <h3>Consultant Pack</h3>
+            <p class="price">$299+</p>
+            <p>Done-for-you onboarding for agencies and database consultants with messy client schemas.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cta" id="pilot">
+        <div>
+          <p class="eyebrow">First customer motion</p>
+          <h2>Offer a paid pilot before building more features.</h2>
+          <p>
+            Message SQL Server developers, DBAs, and agencies: “Send a schema export, I’ll generate safe test data and a repeatable rule file.”
+          </p>
+        </div>
+        <a class="button primary" href="mailto:pilot@seedforge.local?subject=SeedForge%20SQL%20Pilot">Draft pilot email</a>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
