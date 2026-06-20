@@ -74,3 +74,7 @@ This MVP is read/export oriented. It writes only local output files. `--direct-s
 ## Website
 
 Open `website/index.html` in a browser to view the customer-facing landing page and pricing/ROI explanation.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
